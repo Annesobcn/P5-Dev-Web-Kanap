@@ -1,4 +1,7 @@
+const { getAllProducts } = require('./controllers/product');
+const { response } = require('express');
 const express = require('express');
+const { resolve } = require('path');
 const path = require('path');
 
 const productRoutes = require('./routes/product');
