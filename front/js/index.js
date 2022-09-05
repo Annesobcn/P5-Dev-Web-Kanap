@@ -1,27 +1,13 @@
-     //Recupération des produits éventuellment stockés dans le local storage
-    /* let products = window.localStorage.getItem('products');
-
-     if (products === null) {
-     //Récupération des produits via l'API HTTP
-     const reponse = fetch("http://localhost:3000/api/products");
-     const products = reponse.json();
-     //Transformation des produits en JSON
-     const valeurProduits = JSON.stringify(products);
-     //Stockage des informations dans le localStorage
-     window.localStorage.setItem("products", valeurProducts);
-     }else{
-      products = JSON.parse(products);
-     }
-     */
+//Déclaration des variables nécessaires à la création des éléments de la fiche type
     let a = '';
     let article = ''
     let img = '';
     let h3 = '';
     let p = '';
 
-
+     //Recupération des produits via requete fetch
     fetch("http://localhost:3000/api/products")
-    
+    //récupération des produits sous forme de tableau
         .then(function openArray(productsArray) {
           if (productsArray.ok) {
            return productsArray.json();
@@ -29,24 +15,27 @@
      })
       .then(function(products) {     
           console.log("API loaded");
+          //boucle pour générer les fiches produit pour chaque produit
           for (i in products){
      
-            //fonction qui récupère mes information produit pour les fiches de la page d'accueil
+            //fonction qui relie mes information produit pour les fiches
             function genererFiches(i) {
              //Création des fiches produits      
-         //Récupération de l'élément du DOM qui accueillera les fiches
+         //Création de l'élément du DOM qui accueillera les fiches
           a = document.getElementById("items").appendChild(document.createElement("a"));
+        //modification de son attribut
           a.setAttribute("href", "./product.html?id="+ i +"");
           a.setAttribute("id", "a_link");
-         //récupération de la balise dédiée à un produit Kanap
+         //création de la balise dédiée à un produit Kanap
          article = document.createElement("article");
+         //rattachement de l'élément article à la balise a
          a.appendChild(article);
 
-         //récupération de l'élément image
+         //Création de l'élément qui recevra l'image
          img = document.createElement("img");
-          //on rattache l'image à produitsElement(la balise article)
+          //on rattache l'image à la balise article
          article.appendChild(img);
-         //accès à l'indice i de la liste produits pour configurer la source de l'image.
+         //accès à l'indice i de la liste produits pour configurer la source et le texte alternatif de l'image.
          img.setAttribute("src", products[i].imageUrl);
          img.setAttribute("alt", products[i].altTxt);
     
