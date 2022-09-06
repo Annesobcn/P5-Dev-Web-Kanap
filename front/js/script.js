@@ -7,7 +7,10 @@
 
      //Recupération des produits via requete fetch
     fetch("http://localhost:3000/api/products")
-    //récupération des produits sous forme de tableau
+    /**Récupération des produits sous forme de tableau
+     * @params { String } productArray
+     * @return { Promise }
+*/
         .then(function openArray(productsArray) {
           if (productsArray.ok) {
            return productsArray.json();
@@ -19,22 +22,19 @@
           for (i in products){
      
             //fonction qui relie mes information produit pour les fiches
-            function genererFiches(i) {
-             //Création des fiches produits      
+            function genererFiches(i) {//Création des fiches produits  
+                 
          //Création de l'élément du DOM qui accueillera les fiches
           a = document.getElementById("items").appendChild(document.createElement("a"));
-        //modification de son attribut
+        //modification de son attribut et récupération de l'id du produit pour qu'il s'affiche sur la page produit au clik
           a.setAttribute("href", "./product.html?id="+ i +"");
-          a.setAttribute("id", "a_link");
-         //création de la balise dédiée à un produit Kanap
-         article = document.createElement("article");
-         //rattachement de l'élément article à la balise a
-         a.appendChild(article);
+          a.setAttribute("id", "a_link");         
+         article = document.createElement("article");//création de la balise dédiée à un produit Kanap         
+         a.appendChild(article);//rattachement de l'élément article à la balise a
 
          //Création de l'élément qui recevra l'image
-         img = document.createElement("img");
-          //on rattache l'image à la balise article
-         article.appendChild(img);
+         img = document.createElement("img");         
+         article.appendChild(img); //on rattache l'image à la balise article
          //accès à l'indice i de la liste produits pour configurer la source et le texte alternatif de l'image.
          img.setAttribute("src", products[i].imageUrl);
          img.setAttribute("alt", products[i].altTxt);
