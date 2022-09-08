@@ -18,13 +18,13 @@ fetch("http://localhost:3000/api/products")
        return productsArray.json();
     }
  })
-  .then(function(products) {
+  .then(function(products) 
+  {
     console.log("API loaded");
     console.log(products[id]);//récupération des informations produits
   
- 
-      
-      function ficheProduit(products, id) {
+    function ficheProduit(products, id) 
+      {
       //Récupération de l'élément du DOM qui accueillera les fiches
         sectionFiche = document.querySelector(".item");
       
@@ -36,8 +36,7 @@ fetch("http://localhost:3000/api/products")
         imageProduit.setAttribute("alt", products[id].altTxt);
         
       //Création balise qui contiendra les informations du produit
-       // infosProduit = document.querySelector(".item__content").appendChild("infosProduit");
-        //infosProduit.dataset.id = products[id].id;
+      
   //création balise h1 pour titre et insertion du nom de l'article
         h1 = document.createElement("h1");
         document.querySelector("#title").appendChild(h1);
@@ -49,27 +48,76 @@ fetch("http://localhost:3000/api/products")
         description = document.querySelector("#description");
         description.innerText = products[id].description;
       
-        //fonction pour choix des couleurs
-                
-              function colorSelect(){ 
-                for (var i in products[id].colors)
-                {     
-                  color = document.createElement("option"); 
-                   document.querySelector("#colors").add(color);
-                  //paramétrage de l'élément et insertion des couleurs présentes dans le array colors
-                  color.setAttribute("value", products[id].colors[i]);
-                  color.innerText = products[id].colors[i];
-                  } 
-                 color.appendChild(colorSelect);//ajout de l'élément dans color
+        //fonction pour choix des couleurs             
+                            
+        function colorSelect(){ 
+          for (i in products[id].colors)
+          {     
+            color = document.createElement("option"); 
+             document.querySelector("#colors").appendChild(color);
+            //paramétrage de l'élément et insertion des couleurs présentes dans le array colors
+            color.setAttribute("value", products[id].colors[i]);
+            color.innerText = products[id].colors[i];
+            } 
+          // color.appendChild(option);//ajout de l'élément dans color
 
-              } 
-              colorSelect();
-        }       
-         ficheProduit(products, id); 
+        } 
+        colorSelect();
+  }       
+   ficheProduit(products, id); 
 
+
+//Fonction pour récupérer et intégrer l'article choisi dans le panier
+/*function addToCart(id) 
+  {
+  let existingBasket = JSON.parse(localStorage.getItem("totalBasket"));
+
+  if (existingBasket == null) 
+  {
+    existingBasket = [];
+  }
+  }
+const coul = document.getElementById("colors").value;
+const quantite = document.getElementById("quantity");
+
+let myItemJson = 
+{
+  num: id,
+  couleur: coul,
+  qute: quantite
+};
+
+const myItem = JSON.stringify(myItemJson);
+localStorage["lastChoice"] = myItem;//stocke le nouveau produit dans localstorage
+
+
+//vérification de l'existence du produit choisi dans le tableau cart
+basket.forEach(function (objs, i) 
+{
+  obj = JSON.parse(objs);
+
+    if(obj.couleur == myItemJson.couleur && obj.num == myItemJson.num) {
+      obj.qute = JSON.parse(obj.qute) + JSON.parse(myItemJson.qute);
+
+      basket[i] = JSON.stringify(obj);
+      newItem = true;
+      alert( "Nombre d'articles ajouté(s) au panier: " + myItem.qute);
+      localStorage["totalBasket"] = JSON.stringify(basket);
+    }
+
+});
+  if(newItem !== true) {
+    basket.push(myItem);
+    alert("Vous avez sélectionné le canapé référence " + myItemJson.num + " de couleur " + myItemJson.couleur +" en " + myItemJson.qute + " exemplaires.");
+    localStorage["totalBasket"] = JSON.stringify(basket);
+  }
  
- })
+//on écoute l'évènement click pour appeler la fonction ajouter un article
+document.getElementById("addToCart").addEventListener("click",  addToCart(id));
+*/
+})
    .catch(function(error) {
+    alert(error);
     console.log("Api loading : failed!");
   });
 
