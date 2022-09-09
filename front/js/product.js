@@ -58,6 +58,7 @@ fetch("http://localhost:3000/api/products")
             //paramétrage de l'élément et insertion des couleurs présentes dans le array colors
             color.setAttribute("value", products[id].colors[i]);
             color.innerText = products[id].colors[i];
+            
             } 
           // color.appendChild(option);//ajout de l'élément dans color
 
@@ -66,55 +67,64 @@ fetch("http://localhost:3000/api/products")
   }       
    ficheProduit(products, id); 
 
+/*****************************validation produit et envoi au panier ******* */
+function saveProduct(id) {
+  
 
-//Fonction pour récupérer et intégrer l'article choisi dans le panier
-/*function addToCart(id) 
-  {
-  let existingBasket = JSON.parse(localStorage.getItem("totalBasket"));
+//récupérer la couleur choisie
+var selectedList = [],
+    selectColors = document.getElementById("colors"),
+  i;
 
-  if (existingBasket == null) 
-  {
-    existingBasket = [];
-  }
-  }
-const coul = document.getElementById("colors").value;
-const quantite = document.getElementById("quantity");
-
-let myItemJson = 
+for (i = 0; i < selectColors.length; i++)
 {
-  num: id,
-  couleur: coul,
-  qute: quantite
-};
-
-const myItem = JSON.stringify(myItemJson);
-localStorage["lastChoice"] = myItem;//stocke le nouveau produit dans localstorage
-
-
-//vérification de l'existence du produit choisi dans le tableau cart
-basket.forEach(function (objs, i) 
-{
-  obj = JSON.parse(objs);
-
-    if(obj.couleur == myItemJson.couleur && obj.num == myItemJson.num) {
-      obj.qute = JSON.parse(obj.qute) + JSON.parse(myItemJson.qute);
-
-      basket[i] = JSON.stringify(obj);
-      newItem = true;
-      alert( "Nombre d'articles ajouté(s) au panier: " + myItem.qute);
-      localStorage["totalBasket"] = JSON.stringify(basket);
+    if (selectColors[i].selected)
+    {
+      selectedList.push(selectColors[i]);
     }
+}
 
-});
-  if(newItem !== true) {
-    basket.push(myItem);
-    alert("Vous avez sélectionné le canapé référence " + myItemJson.num + " de couleur " + myItemJson.couleur +" en " + myItemJson.qute + " exemplaires.");
-    localStorage["totalBasket"] = JSON.stringify(basket);
-  }
- 
-//on écoute l'évènement click pour appeler la fonction ajouter un article
-document.getElementById("addToCart").addEventListener("click",  addToCart(id));
-*/
+var choixCouleur = document.getElementById("colors");
+var selectedCouleur = choixCouleur.options[choixCouleur.selectedIndex].value;
+var texteCouleur = choixCouleur.options[choixCouleur.selectedIndex].text;
+
+   // récupération des valeurs requises dans le panier: id, couleur et quantité
+   const reference = products[id]._id;
+   console.log(reference);
+   const couleur = document.getElementById("colors").value;
+  console.log(couleur);
+   const quantite = document.getElementById("quantity").value;
+
+//constante pour faciliter la récupération des données du panier
+  // const panier = JSON.parse(localStorage.getItem("choixProduit"));
+   //condition 1: si pdt absent du panier: on l'ajoute
+   /*if(panier == null) {
+    panier = [] ;
+   }*/
+
+   //ajout des valeurs du produit choisi dans le local storage
+  document.getElementById("addToCart").onclick = () =>{
+            const choixProduitJson = {
+                  ref: reference,
+                  couleur: couleur,
+                  quantite: quantite,
+            }
+
+            const choixProduit = JSON.stringify(choixProduitJson);
+      localStorage.setItem("addToCart", choixProduit);
+      
+   }
+//condition 2: si le produit selectionné existe déjà dans le panier: on incrémente la quantité uniquement
+
+}
+//appel de la fonction au click de l'utilisateur pour valider son choix
+
+document.getElementById("addToCart").addEventListener("click", function () 
+{
+saveProduct(id);
+})
+
+
 })
    .catch(function(error) {
     alert(error);
