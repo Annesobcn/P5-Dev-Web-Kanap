@@ -85,90 +85,35 @@ function saveProduct(id)
 
 
     const nouveauProduitDansLocalStorage = JSON.stringify(optionsProduitJson);
-    localStorage.setItem("addToCart", nouveauProduitDansLocalStorage);
+    localStorage.setItem("produit", nouveauProduitDansLocalStorage);
 
+        function ajouterProduit(nouveauProduitDansLocalStorage){
 //constante pour convertir les objets du local storage en objet javascript
-   const produitsDuLocalStorage = JSON.parse(localStorage.getItem("addToCart"));
+          const produitsDuLocalStorage = JSON.parse(localStorage.getItem("produit"));
    
-    console.log(produitsDuLocalStorage);
+          console.log(produitsDuLocalStorage);
 // S'il y a le même produit (même id et même couleur) enregistrés dans le panier
-          if(produitsDuLocalStorage == null){
+          if(produitsDuLocalStorage == null)
+          {
            produitsDuLocalStorage = [];
-           produitsDuLocalStorage.push();
-                  console.log(produitsDuLocalStorage);
+           nouveauProduitDansLocalStorage.push();       
+           console.log(produitsDuLocalStorage);
           }
           else
           {
-         
                  if(nouveauProduitDansLocalStorage.couleur == Object.couleur && nouveauProduitDansLocalStorage.ref == Object.ref ){
                   
                   }
                 else{
 
+           produitsDuLocalStorage.push();
                   }
  
           }
 
-
-
+        }
+        ajouterProduit(nouveauProduitDansLocalStorage);
    
-   //condition 1: si panier vide: on ajoute le pdt
-  // if(panier == null) 
-  // {
-    //panier = [] ;
-   //}
-   
-   
-   /* panier.keys(localStorage).forEach(function (keys, i)  
-   {
-    let key = JSON.parse(localStorage.getItem(keys))
-     //si pdt déjà ds panier(même ref + même couleur): ajouter quantité +1 au produit
-    if(key.couleur == choixProduitJson.couleur && key.ref == choixProduitJson.ref)
-    {
-      key.quantite = JSON.parse(key.quantite + JSON.parse(key.choixProduitJson.quantite));
-      panier[i] = JSON.stringify(obj);
-      newItem = true;
-      alert("Vous venez d'ajouter " + choixProduitJson.quantite + "canapé de couleur " +choixProduitJson.couleur +" à votre panier");
-      console.log("Total articles panier: " + panier[key.quantite]);
-      localStorage.setItem("totalPanier" , JSON.stringify(panier));
-
-    }
-  });
-    if (newItem !== true)
-    {
-     //mais si pdt absent du panier mais panier  plein: on l'ajoute aussi
-     panier.push(choixProduit);
-     alert("Vous venez d'ajouter le canapé référence: " + choixProduitJson.ref + "en " + choixProduitJson.couleur +"et " + choixProduitJson.quantite + " d'exemplaire(s)");
-     localStorage.setItem("totalPanier", JSON.stringify(panier));
- 
-    }*/
-
-   
-
-//condition 2: si le produit selectionné existe déjà dans le panier: on incrémente la quantité uniquement
-      /*   
-panier.sort(function (objs, i)
-{
-  obj = JSON.parse(objs);
-
-  if(obj.couleur == choixProduitJson.couleur && obj.ref == choixProduitJson.ref){
-    
-        obj.quantite = JSON.parse(obj.quantite + JSON.parse(obj.choixProduitJson.quantite));
-
-        panier[i] = JSON.stringify(obj);
-        newItem = true;
-        alert("Vous venez d'ajouter " + choixProduitJson.quantite + "canapé de couleur " +choixProduitJson.couleur +" à votre panier");
-        console.log("Total articles panier: " + panier[obj.quantite]);
-        localStorage.setItem("totalPanier" , JSON.stringify(panier));
-  }
-});
-  if (newItem !== true)
-  {
-    panier.push(choixProduit);
-    alert("Vous venez d'ajouter le canapé référence: " + choixProduitJson.ref + "en " + choixProduitJson.couleur +"et " + choixProduitJson.quantite + " d'exemplaire(s)");
-    localStorage.setItem("totalPanier", JSON.stringify(panier));
-
-  }*/
     
   }
 //appel de la fonction au click de l'utilisateur pour valider son choix
