@@ -66,6 +66,15 @@ fetch("http://localhost:3000/api/products")
 
 function saveProduct(id) 
 {
+  //constante pour convertir les objets du local storage en objet javascript
+  let ProduitsDuLocalStorage = JSON.parse(localStorage.getItem("listeProduit"));
+
+  if(ProduitsDuLocalStorage == null)
+  {
+   ProduitsDuLocalStorage = [];
+   
+  }
+
    // récupération des valeurs requises dans le panier: id, couleur et quantité
    const reference = products[id]._id;
    //récupérer le choix de la couleur
@@ -76,7 +85,7 @@ function saveProduct(id)
    const quantite = choixQte.value;
    //*ajout des valeurs du produit choisi pour le local storage*/
   
-   const optionsProduitJson = 
+   let objOptionsProduitJson = 
    {
     ref: reference,
     couleur: couleur,
@@ -84,35 +93,31 @@ function saveProduct(id)
     };
 
 
-    const nouveauProduitDansLocalStorage = JSON.stringify(optionsProduitJson);
-    localStorage.setItem("produit", nouveauProduitDansLocalStorage);
+    let NouveauProduitDansLocalStorage = JSON.stringify(objOptionsProduitJson);
+    localStorage.setItem("produit", NouveauProduitDansLocalStorage);
 
         function ajouterProduit(nouveauProduitDansLocalStorage){
-//constante pour convertir les objets du local storage en objet javascript
-          const produitsDuLocalStorage = JSON.parse(localStorage.getItem("produit"));
+
    
-          console.log(produitsDuLocalStorage);
+          console.log(ProduitsDuLocalStorage);
 // S'il y a le même produit (même id et même couleur) enregistrés dans le panier
-          if(produitsDuLocalStorage == null)
-          {
-           produitsDuLocalStorage = [];
-           nouveauProduitDansLocalStorage.push();       
-           console.log(produitsDuLocalStorage);
-          }
-          else
-          {
-                 if(nouveauProduitDansLocalStorage.couleur == Object.couleur && nouveauProduitDansLocalStorage.ref == Object.ref ){
+          ProduitsDuLocalStorage.forEach(function (objs, i) {
+            obj = JSON.parse(objs);
+         
+          
+                 if(NouveauProduitDansLocalStorage.couleur == obj.couleur && NouveauProduitDansLocalStorage.ref == obj.ref ){
                   
                   }
                 else{
-
-           produitsDuLocalStorage.push();
+                  NouveauProduitDansLocalStorage.push();      
+                  console.log(ProduitsDuLocalStorage);
+       
                   }
- 
-          }
+                })
+          
 
         }
-        ajouterProduit(nouveauProduitDansLocalStorage);
+        ajouterProduit(NouveauProduitDansLocalStorage);
    
     
   }
