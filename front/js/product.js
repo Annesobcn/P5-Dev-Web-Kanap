@@ -65,6 +65,8 @@ fetch("http://localhost:3000/api/products")
 
 //*******localSotrage********/
 
+
+
 function saveProduct(id) 
 {
   
@@ -76,50 +78,68 @@ function saveProduct(id)
    //pour récupérer le choix de la quantité
    const choixQte = document.querySelector("input");
    const quantite = choixQte.value;
+
+   //contrôle des chois de l'utilisateur
+if (couleur == '') {
+  alert("Attention! Choisissez une couleur!");
+}
+else if(quantite<=0 || quantite > 100) {
+  alert("Attention! Entrez une quantité entre 1 et 100")
+} else{
+
    //*ajout des valeurs du produit choisi pour le local storage*/
   
    let optionsProduit = 
    {
     ref: reference,
     coul: couleur,
-    qute: quantite,
+    qute: Number(quantite),
     };
-
 
 //constante pour convertir les objets du local storage en objet javascript
 let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
-
-if(!panierLocalStorage)
+//s'il y a des produits dans le panier: on vérifie qu'il n'y ait pas le même que celui selectionné
+ if(panierLocalStorage)
+{
+  const verifPanier = panierLocalStorage.find(
+    (p) => 
+    p.ref == optionsProduit.ref && p.coul == optionsProduit.coul
+  );
+  //si le même produit(ref et coul) est dans le panier, on ajoute que la quantité
+    if (verifPanier) 
     {
+      verifPanier.qute = verifPanier.qute + optionsProduit.qute;
+      localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+      alert('La quantité est à jour');
+      return;
+    }
+    //sinon on ajoute le produit
+    panierLocalStorage.push(optionsProduit);
+    localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+    alert('Article suivant ajouté au panier');
+
+      
+} else{
+  //si panier vide: on ajoute le produit dans tableau
       panierLocalStorage = [];
       panierLocalStorage.push(optionsProduit);
       localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
       console.log("ok!");
-    }
-else if(panierLocalStorage.ref == optionsProduit.ref && panierLocalStorage.coul == optionsProduit.coul)
-{
-      panierLocalStorage.push(optionsProduit.qute);
-      localStorage.setItem("produit.qte", JSON.stringify(panierLocalStorage));
-      alert(error);
+      alert('Article ajouté au panier');
+      window.location.reload();
+      return;
 }
- 
-      panierLocalStorage.push(optionsProduit);
-      localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
-      alert("Vous venez d'ajouter un article à votre panier")
       console.log(panierLocalStorage);
-
-
-
-
-    
+ 
   }
+  
+}
 //appel de la fonction au click de l'utilisateur pour valider son choix
 
 document.getElementById("addToCart").addEventListener("click", function () 
 {
 saveProduct(id);
 })
-
 
 })
    .catch(function(error) {
