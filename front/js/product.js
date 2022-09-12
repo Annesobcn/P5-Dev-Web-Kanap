@@ -1,3 +1,4 @@
+let newProduct = '';
 //Lien entre un produit de la page d'accueil et la page produit
   let completeUrl = location;
   var url = new URL(completeUrl);
@@ -66,15 +67,7 @@ fetch("http://localhost:3000/api/products")
 
 function saveProduct(id) 
 {
-  //constante pour convertir les objets du local storage en objet javascript
-  let ProduitsDuLocalStorage = JSON.parse(localStorage.getItem("listeProduit"));
-
-  if(ProduitsDuLocalStorage == null)
-  {
-   ProduitsDuLocalStorage = [];
-   
-  }
-
+  
    // récupération des valeurs requises dans le panier: id, couleur et quantité
    const reference = products[id]._id;
    //récupérer le choix de la couleur
@@ -85,40 +78,39 @@ function saveProduct(id)
    const quantite = choixQte.value;
    //*ajout des valeurs du produit choisi pour le local storage*/
   
-   let objOptionsProduitJson = 
+   let optionsProduit = 
    {
     ref: reference,
-    couleur: couleur,
-    quantite: quantite,
+    coul: couleur,
+    qute: quantite,
     };
 
 
-    let NouveauProduitDansLocalStorage = JSON.stringify(objOptionsProduitJson);
-    localStorage.setItem("produit", NouveauProduitDansLocalStorage);
+//constante pour convertir les objets du local storage en objet javascript
+let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
 
-        function ajouterProduit(nouveauProduitDansLocalStorage){
+if(!panierLocalStorage)
+    {
+      panierLocalStorage = [];
+      panierLocalStorage.push(optionsProduit);
+      localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+      console.log("ok!");
+    }
+else if(panierLocalStorage.ref == optionsProduit.ref && panierLocalStorage.coul == optionsProduit.coul)
+{
+      panierLocalStorage.push(optionsProduit.qute);
+      localStorage.setItem("produit.qte", JSON.stringify(panierLocalStorage));
+      alert(error);
+}
+ 
+      panierLocalStorage.push(optionsProduit);
+      localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+      alert("Vous venez d'ajouter un article à votre panier")
+      console.log(panierLocalStorage);
 
-   
-          console.log(ProduitsDuLocalStorage);
-// S'il y a le même produit (même id et même couleur) enregistrés dans le panier
-          ProduitsDuLocalStorage.forEach(function (objs, i) {
-            obj = JSON.parse(objs);
-         
-          
-                 if(NouveauProduitDansLocalStorage.couleur == obj.couleur && NouveauProduitDansLocalStorage.ref == obj.ref ){
-                  
-                  }
-                else{
-                  NouveauProduitDansLocalStorage.push();      
-                  console.log(ProduitsDuLocalStorage);
-       
-                  }
-                })
-          
 
-        }
-        ajouterProduit(NouveauProduitDansLocalStorage);
-   
+
+
     
   }
 //appel de la fonction au click de l'utilisateur pour valider son choix
