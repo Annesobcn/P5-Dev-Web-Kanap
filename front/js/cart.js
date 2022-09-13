@@ -1,84 +1,58 @@
-const panierLocalStorage = localStorage.getItem("produit");
-const panierLocalStorageJson = JSON.parse(panierLocalStorage);
+let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
+console.table(panierLocalStorage);
 
+for (let item of panierLocalStorage)
+         {
+        
+              //let key = JSON.parse(Objects);
+            let produitRef = item.ref;
+            console.log(produitRef);
+            let produitCouleur = item.coul;
+            console.log(produitCouleur);
+            let produitQuantite = item.qute;
+            console.log(produitQuantite);
 
 //appel de l'API
-fetch("http://localhost:3000/api/products")
+fetch(`http://localhost:3000/api/products/${produitRef}`)
 //récupération des produits sous forme de tableau
-    .then(function openArray(productsArray) {
+    .then(function (productsArray) {
       if (productsArray.ok) {
        return productsArray.json();
     }
  })
   .then(function(products) 
   {
+    const product = products;
     console.log("API loaded");
-   console.log(panierLocalStorageJson);
-   for (i in products){
-    console.log(products);
+   console.log(panierLocalStorage);
+   console.log(products);
+   
   //affichage des produits présents dans local storage
 
-//si produits dans panier: crée une carte produit pour chaque produit
-    if (panierLocalStorageJson) {
-     /* const detailProduit = panierLocalStorage.find(
-        (p) => 
-         p.ref ==  itemRef,
-         p.coul == itemCouleur,   
-         p.qute == itemQuantite  
-      
-      );
-      const detailProduitJson = JSON.parse(detailProduit);
-     
-        console.log(detailProduitJson.ref);*/
- /* 
- const afficherProduit = panierLocalStorageJson.find
-  (
-    (p) => 
-    let produit = JSON.parse(produits),
-    let produitCode = p.ref,
-    let produitCouleur = p.coul,
-    let produitQuantite = p.qute
-  )*/
-     //console.log(panierLocalStorage);
-      function createCardProduct(){
-        for (i = 0 ; i >= panierLocalStorageJson.length; i++)
-         {
-         
-
-            function afficherProduit(i) {
-
-              article = document.createElement("article");
-              document.getElementsByClassName("cart__item").appendChild(article);
-              article.setAttribute("class", "cart__item");
-              article.setAttribute("data-id", "productRef");
-              article.setAttribute("data-color", "itemCouleur");
-
-              
-              divImg = document.createElement("div");
-              article.appendChild(divImg);
-              divImg.setAttribute("class", "car__item__img");
-
-              img =document.createElement("img");
-              divImg.appendChild(img);
-              img.setAttribute("src", value[i].imageUrl);
-              img.setAttribute("alt", value[i].altTxt);
-
-
+  
+                article = document.createElement("article");
+                document.querySelector("#cart__items").appendChild(article);
+                article.setAttribute("class", "cart__item");
+                article.setAttribute("data-id", "produitRef");
+                article.setAttribute("data-color", "produitCouleur");
+  
+                
+                divImg = document.createElement("div");
+                article.appendChild(divImg);
+                divImg.setAttribute("class", "car__item__img");
+  
+                let productImg = document.createElement("img");
+                divImg.appendChild(productImg);
+                productImg.src = products.imageUrl;
+                productImg.alt = products.altTxt;
+              })
+              .catch(function(error) {
+                alert(error);
+                console.log("Api loading : failed!");
+              });
+  
     }
     
 
 
-
-
-    afficherProduit(i); 
-    }
-    
-  }
-  createCardProduct();
-}
-}
-  })
-  .catch(function(error) {
-    alert(error);
-    console.log("Api loading : failed!");
-  });
+ 
