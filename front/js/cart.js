@@ -96,8 +96,9 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
         let quteChoisie = quteInitiale.querySelector("input");
       // console.log(JSON.parse(quteChoisie.product));
         produitQuantite = JSON.parse(quteChoisie.value);
-        //panierLocalStorage[p] = JSON.stringify(product);
-       localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+        panierLocalStorage.push(produitQuantite);
+    localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+    alert('Quantité modifiée dans le panier!');
       };
 
               })
