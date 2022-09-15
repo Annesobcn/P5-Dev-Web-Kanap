@@ -101,7 +101,7 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
             console.log(produitQuantiteOk);
            
             const resultFind = panierLocalStorage.find((el) => el.produitQuantiteOk !== quteChoisie);
-            resultFind.quantiteProduit = produitQuantiteOk;
+            resultFind.qute = produitQuantiteOk;
             panierLocalStorage.quantiteProduit = resultFind.quantiteProduit;
 
             localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
