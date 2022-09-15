@@ -22,7 +22,7 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
  })
   .then(function(products) 
   {
-   const product = products;
+  // const product = products;
     console.log("API loaded");
    console.log(panierLocalStorage);
    console.log(products);
@@ -87,18 +87,26 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
                 input_quantite.setAttribute("max", "100");
                 input_quantite.setAttribute("value", produitQuantite);
                 input_quantite.addEventListener("click", function() {
-                  modifierQute();
+                  modifierQute(item);
                 });
-
+ 
 //fonction pour modifier la quantité si l'utilisateur clique sur le bouton input
-      function modifierQute(p) {
-        let quteInitiale = document.querySelector("[data-id= " + CSS.escape(produitRef) + "][data-color=" + CSS.escape(produitCouleur) + "]");
-        let quteChoisie = quteInitiale.querySelector("input");
-      // console.log(JSON.parse(quteChoisie.product));
-        produitQuantite = JSON.parse(quteChoisie.value);
-        panierLocalStorage.push(produitQuantite);
-    localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
-    alert('Quantité modifiée dans le panier!');
+      function modifierQute(item) {
+            let optionsProduit = document.querySelector("[data-id= " + CSS.escape(produitRef) + "][data-color=" + CSS.escape(produitCouleur) + "]");
+            let quteChoisie = optionsProduit.querySelector("input");
+            console.log(optionsProduit);
+            console.log(JSON.parse(quteChoisie.value));
+
+            produitQuantiteOk = JSON.stringify(quteChoisie.value);
+            console.log(produitQuantiteOk);
+           
+            const resultFind = panierLocalStorage.find((el) => el.produitQuantiteOk !== quteChoisie);
+            resultFind.quantiteProduit = produitQuantiteOk;
+            panierLocalStorage.quantiteProduit = resultFind.quantiteProduit;
+
+            localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+            alert('Quantité modifiée dans le panier!');
+
       };
 
               })
