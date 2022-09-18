@@ -3,13 +3,11 @@ console.table(panierLocalStorage);
 
 for (let item of panierLocalStorage)
          {
-        
-            
             let produitRef = item.ref;
             console.log(produitRef);
             let produitCouleur = item.coul;
             console.log(produitCouleur);
-            let produitQuantite = Number(item.qute);
+            let produitQuantite = item.qute;
             console.log(produitQuantite);
 
 //appel de l'API
@@ -87,34 +85,56 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
                 input_quantite.setAttribute("max", "100");
                 input_quantite.setAttribute("value", produitQuantite);
                 input_quantite.addEventListener("change", function() {
-                  modifierQute(produitRef);
+                  modifierQute();
                   
                 });
               
       
   /* Modifier la quantité*/
-    let quteChoisie = document.querySelector(".itemQuantity");
-                console.log(quteChoisie.value);
+  
+    //fonction pour modifier la quantité si l'utilisateur clique sur le bouton input
+      function modifierQute() 
+      { 
+        let articleModifie = document.querySelector(".cart__item");
+  console.log(articleModifie.dataset.id);
+  
+ 
+        for (let i in articleModifie) {
+          
+          let idProduitChoisi = articleModifie.dataset.id;
+          console.log(idProduitChoisi);
+          let couleurProduitChoisi = articleModifie.dataset.color;
+          console.log(couleurProduitChoisi);
 
-    
-//fonction pour modifier la quantité si l'utilisateur clique sur le bouton input
-      function modifierQute(produitRef) 
-      {
+          let quantiteModifiee = document.querySelector(".itemQuantity");
+          console.log(quantiteModifiee.value);
+          
         
-          const verifPanier = panierLocalStorage.find(
+  console.log(produitQuantite);
+  /*if(idProduitChoisi == produitRef){
+    produitQuantite = quantiteModifiee.value
+    localStorage.setItem("produit", JSON.stringify(panierLocalStorage))
+  }else{
+    return;
+  };*/
+         let verifPanierLocal = panierLocalStorage.find(
             (p) => 
-            p.ref == quteChoisie.ref 
+             p.qute !== quantiteModifiee.value
           );
-          verifPanier.qute = quteChoisie.qute;
-      localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+          verifPanierLocal.qute = quantiteModifiee.value;
+          panierLocalStorage.qute = verifPanierLocal.qute;
+          localStorage.setItem("produit", JSON.stringify(panierLocalStorage))
+          location.reload();
+
+         
+      
       
       alert('Quantité modifiée dans le panier!');
       return;
-        
+    }
          
       };
          
-      console.log(quteChoisie.value);
          
               })
               .catch(function(error) {

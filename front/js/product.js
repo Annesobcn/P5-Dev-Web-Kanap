@@ -79,7 +79,7 @@ function saveProduct(id)
    const choixQte = document.querySelector("input");
    const quantite = choixQte.value;
 
-   //contrôle des chois de l'utilisateur
+   //contrôle des choix de l'utilisateur
 if (couleur == '') {
   alert("Attention! Choisissez une couleur!");
 }
@@ -101,7 +101,8 @@ let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
 //s'il y a des produits dans le panier: on vérifie qu'il n'y ait pas le même que celui selectionné
  if(panierLocalStorage)
 {
-  const verifPanier = panierLocalStorage.find(
+ // alert(p);
+  let verifPanier = panierLocalStorage.find(
     (p) => 
     p.ref == optionsProduit.ref && p.coul == optionsProduit.coul
   );
@@ -142,8 +143,4 @@ saveProduct(id);
 })
 
 })
-   .catch(function(error) {
-    alert(error);
-    console.log("Api loading : failed!");
-  });
-
+   
