@@ -86,9 +86,22 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
                 input_quantite.setAttribute("value", produitQuantite);
                 input_quantite.addEventListener("change", function() {
                   modifierQute();
-                  
                 });
-              
+                let boutonSupprimer = document.createElement("div");
+                divProduitSettings.appendChild(boutonSupprimer);
+                boutonSupprimer.className = "cart__item__content__settings__delete";
+                boutonSupprimer.id = "cart__item__content__settings__delete";
+
+                let texteSupprimer = document.createElement("p");
+                boutonSupprimer.appendChild(texteSupprimer);
+                texteSupprimer.className = "deleteItem";
+                texteSupprimer.id = "deleteItem";
+                texteSupprimer.innerText = "Supprimer";
+                texteSupprimer.addEventListener("click", function(){
+                  supprimerArticle();
+                })
+
+
       
   /* Modifier la quantité*/
   
@@ -109,14 +122,6 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
           let quantiteModifiee = document.querySelector(".itemQuantity");
           console.log(quantiteModifiee.value);
           
-        
-  console.log(produitQuantite);
-  /*if(idProduitChoisi == produitRef){
-    produitQuantite = quantiteModifiee.value
-    localStorage.setItem("produit", JSON.stringify(panierLocalStorage))
-  }else{
-    return;
-  };*/
          let verifPanierLocal = panierLocalStorage.find(
             (p) => 
              p.qute !== quantiteModifiee.value
@@ -125,16 +130,12 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
           panierLocalStorage.qute = verifPanierLocal.qute;
           localStorage.setItem("produit", JSON.stringify(panierLocalStorage))
           location.reload();
-
-         
-      
-      
+     
       alert('Quantité modifiée dans le panier!');
       return;
     }
          
       };
-         
          
               })
               .catch(function(error) {
