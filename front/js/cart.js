@@ -114,11 +114,11 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
  
         for (let i in articleModifie) {
           
-          let idProduitChoisi = articleModifie.dataset.id;
+         /* let idProduitChoisi = articleModifie.dataset.id;
           console.log(idProduitChoisi);
           let couleurProduitChoisi = articleModifie.dataset.color;
           console.log(couleurProduitChoisi);
-
+*/
           let quantiteModifiee = document.querySelector(".itemQuantity");
           console.log(quantiteModifiee.value);
           
@@ -136,6 +136,31 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
     }
          
       };
+      /*Fonction pour supprimer un article*/
+
+function supprimerArticle()
+{
+  let idSupprime = article.dataset.id;
+  console.log(idSupprime);
+  let colorSupprime = article.dataset.color;
+  console.log(colorSupprime);
+  let articleASupprimer = document.querySelector(".cart__item");
+  console.log(articleASupprimer.dataset.id);
+  console.log(articleASupprimer.dataset.color);
+
+  let checkPanierLocal = panierLocalStorage.find (
+    (p) => p.ref == idSupprime.value && p.coul == colorSupprime
+  );
+  console.log(checkPanierLocal);
+ /* let index = panierLocalStorage.findIndex(item => item.ref ===ref);
+  panierLocalStorage.splice(index,1);*/
+  document.getElementById("cart__items").remove(article);
+  localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+
+  alert('Article supprimé du panier!');
+  location.reload();
+};
+
          
               })
               .catch(function(error) {
