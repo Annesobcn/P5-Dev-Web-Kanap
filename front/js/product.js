@@ -117,7 +117,7 @@ let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
     //sinon on ajoute le produit
     panierLocalStorage.push(optionsProduit);
     localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
-    alert('Article suivant ajouté au panier');
+    alert('Nouvel article ajouté au panier');
 
       
 } else{
@@ -127,7 +127,7 @@ let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
       localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
       console.log("ok!");
       alert('Article ajouté au panier');
-      window.location.reload();
+      //window.location.reload();
       return;
 }
       console.log(panierLocalStorage);
