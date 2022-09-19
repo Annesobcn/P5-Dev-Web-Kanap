@@ -1,6 +1,12 @@
 let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
 console.table(panierLocalStorage);
 
+   //si le panier est vide
+   let positionEmptyCart = document.querySelector("#cart__items");
+if (panierLocalStorage === null || panierLocalStorage == 0) {
+  let emptyCart = `Le panier est vide.`;
+  positionEmptyCart.innerText = emptyCart;
+} else {
 for (let item of panierLocalStorage)
          {
             let produitRef = item.ref;
@@ -9,6 +15,7 @@ for (let item of panierLocalStorage)
             console.log(produitCouleur);
             let produitQuantite = item.qute;
             console.log(produitQuantite);
+            let produitPrix = item.prix;
 
 //appel de l'API
 fetch(`http://localhost:3000/api/products/${produitRef}`)
@@ -24,12 +31,9 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
     console.log("API loaded");
    console.log(panierLocalStorage);
    console.log(products);
-   
+
   //affichage des produits présents dans local storage
-  if (panierLocalStorage === null || panierLocalStorage == 0) {
-    const emptyCart = `<p>Votre panier est vide.</p>`;
-    positionEmptyCart.innerHTML = emptyCart;
-} else {
+  
   
                 article = document.createElement("article");
                 document.querySelector("#cart__items").appendChild(article);
@@ -103,7 +107,7 @@ fetch(`http://localhost:3000/api/products/${produitRef}`)
                 texteSupprimer.addEventListener("click", function(){
                   supprimerArticle(produitRef, produitCouleur);
                 })
-              }
+              
             
 
       
@@ -177,8 +181,8 @@ let prixTotal = 0;
 for (let i = 0; i < quantiteLength; i++)
 {
   totalQuantite += quantiteProduit[i].valueAsNumber;
-  prixTotal += (quantiteProduit[i].valueAsNumber * products.price);
-  console.log(panierLocalStorage[i].price);
+  prixTotal += (quantiteProduit[i].valueAsNumber * panierLocalStorage[i].prix);
+  console.log(produitPrix);
 }
 
 let elementTotalQuantite = document.getElementById("totalQuantity");
@@ -198,6 +202,6 @@ totaux();
   
     }
     
-
+  }
 
  

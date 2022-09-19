@@ -78,6 +78,7 @@ function saveProduct(id)
    //pour récupérer le choix de la quantité
    const choixQte = document.querySelector("input");
    const quantite = choixQte.value;
+   const prix = products[id].price;
 
    //contrôle des choix de l'utilisateur
 if (couleur == '') {
@@ -94,6 +95,7 @@ else if(quantite<=0 || quantite > 100) {
     ref: reference,
     coul: couleur,
     qute: Number(quantite),
+    prix: prix,
     };
 
 //constante pour convertir les objets du local storage en objet javascript
@@ -127,7 +129,7 @@ let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
       localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
       console.log("ok!");
       alert('Article ajouté au panier');
-      //window.location.reload();
+      window.location.reload();
       return;
 }
       console.log(panierLocalStorage);
