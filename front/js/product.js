@@ -1,8 +1,9 @@
 let newProduct = '';
 //Lien entre un produit de la page d'accueil et la page produit
   let completeUrl = location;
-  var url = new URL(completeUrl);
-  var searchParams = new URLSearchParams(url.search);
+  let url = new URL(completeUrl);
+  console.log(url);
+  let searchParams = new URLSearchParams(url.search);
   if(searchParams.has('id')) {
     var id = searchParams.get("id");
     console.log("Item ID is " + id);
@@ -71,6 +72,7 @@ function saveProduct(id)
 {
   
    // récupération des valeurs requises dans le panier: id, couleur et quantité
+   const nom = products[id].name;
    const reference = products[id]._id;
    //récupérer le choix de la couleur
    const choixCouleur = document.getElementById("colors");
@@ -79,6 +81,8 @@ function saveProduct(id)
    const choixQte = document.querySelector("input");
    const quantite = choixQte.value;
    const prix = products[id].price;
+   const imageProduit = products[id].imageUrl;
+   const altTxt = products[id].altTxt;
 
    //contrôle des choix de l'utilisateur
 if (couleur == '') {
@@ -93,13 +97,16 @@ else if(quantite<=0 || quantite > 100) {
    let optionsProduit = 
    {
     ref: reference,
+    nom: nom,
     coul: couleur,
     qute: Number(quantite),
     prix: prix,
+    imageProduit: imageProduit,
+    altTxt: altTxt
     };
 
 //constante pour convertir les objets du local storage en objet javascript
-let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
+let panierLocalStorage = JSON.parse(localStorage.getItem("panier"));
 //s'il y a des produits dans le panier: on vérifie qu'il n'y ait pas le même que celui selectionné
  if(panierLocalStorage)
 {
@@ -112,13 +119,13 @@ let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
     if (verifPanier) 
     {
       verifPanier.qute = verifPanier.qute + optionsProduit.qute;
-      localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+      localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
       alert('La quantité est à jour');
       return;
     }
     //sinon on ajoute le produit
     panierLocalStorage.push(optionsProduit);
-    localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+    localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
     alert('Nouvel article ajouté au panier');
 
       
@@ -126,7 +133,7 @@ let panierLocalStorage = JSON.parse(localStorage.getItem("produit"));
   //si panier vide: on ajoute le produit dans tableau
       panierLocalStorage = [];
       panierLocalStorage.push(optionsProduit);
-      localStorage.setItem("produit", JSON.stringify(panierLocalStorage));
+      localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
       console.log("ok!");
       alert('Article ajouté au panier');
       window.location.reload();
