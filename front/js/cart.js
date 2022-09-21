@@ -187,8 +187,76 @@ elementTotalPrix.innerText = prixTotal;
  
 }    
 totaux(); 
-           
+  /*Formulaire*/
+       //Récupération et analyse des données saisies dans le formulaire 
+       function formulaire()
+       {
+        let form = document.querySelector(".cart__order__form");
+        let noms = new RegExp("^[a-zA-Z0-9.! ,.'-]+$");
+        let adresse = new RegExp('^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+');
+        let mail = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+
+        //Ecoute des entrées de l'utilisateur sur chaque élément du formulaire
+        form.firstName.addEventListener('change', function(){
+          validFirstName(this);
+        });
+        form.lastName.addEventListener('change', function(){
+          validLastName(this);
+        });
+        form.address.addEventListener('change', function(){
+          validAddress(this);
+        });
+        form.city.addEventListener('change', function(){
+          validCity(this);
+        });
+        form.email.addEventListener('change', function(){
+          validEmail(this);
+        });
+
+//messages erreur ou correct selon entrées de l'utilisateur
+let validFirstName = function(inputFirstName){
+    let firstNameAlertMessage = inputFirstName.nextElementSibling;
+    if (noms.test(inputFirstName.value)) {
+      firstNameAlertMessage.innerText = '';
+    }else{
+      firstNameAlertMessage.innerText = 'Champs invalide!';
+    }
+};
+let validLastName = function(inputLastName){
+  let lastNameAlertMessage = inputLastName.nextElementSibling;
+  if (noms.test(inputLastName.value)) {
+    lastNameAlertMessage.innerText = '';
+  }else{
+    lastNameAlertMessage.innerText = 'Champs invalide!';
+  }
+};
+let validAddress = function(inputAddress){
+  let addressAlertMessage = inputAddress.nextElementSibling;
+  if (adresse.test(inputAddress.value)) {
+    addressAlertMessage.innerText = '';
+  }else{
+    addressAlertMessage.innerText = 'Champs invalide!';
+  }
+};
+let validCity = function(inputCity){
+  let cityAlertMessage = inputCity.nextElementSibling;
+  if (noms.test(inputCity.value)) {
+    cityAlertMessage.innerText = '';
+  }else{
+    cityAlertMessage.innerText = 'Champs invalide!';
+  }
+};
+let validEmail = function(inputEmail){
+  let emailAlertMessage = inputEmail.nextElementSibling;
+  if (mail.test(inputEmail.value)) {
+    emailAlertMessage.innerText = '';
+  }else{
+    emailAlertMessage.innerText = 'Champs invalide!';
+  }
+};
+}   
   
+
     
 }      
 }
