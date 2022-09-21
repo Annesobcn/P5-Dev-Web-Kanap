@@ -138,36 +138,25 @@ function modifierQute()
   localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
   alert('Quantité modifiée dans le panier!');
   return;
-}
-//};
-
-    /*Fonction pour supprimer un article*/
-/*
-function supprimerArticle(produitRef, produitCouleur)
-{
-let articleASupprimer = document.querySelector(".deleteItem");
-let idSupprime = article.dataset.id;
-console.log(idSupprime);
-let colorSupprime = article.dataset.color;
-console.log(colorSupprime);
-
-let checkPanierLocal = panierLocalStorage.find (
-  (p) => p.ref == idSupprime.value && p.coul == colorSupprime.value && p.qute == 1
-);
-checkPanierLocal = articleASupprimer;
-console.log(checkPanierLocal);
-
-let index = panierLocalStorage.findIndex(item => item.ref === idSupprime);
-panierLocalStorage.splice(index,1);
-// checkPanierLocal.remove(index);
-localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
-
-alert('Article supprimé du panier!');
-location.reload();
 };
 
 
-  */
+    /*Fonction pour supprimer un article*/
+function supprimerArticle()
+{
+  console.log(produitRef);
+
+  let articleASupprimer = document.querySelector("[data-id=" + CSS.escape(produitRef) + "][data-color=" + CSS.escape(produitCouleur) +"]");
+  let referenceASupprimer = articleASupprimer.dataset.id;
+  let couleurASupprimer = articleASupprimer.dataset.color;
+  console.log(referenceASupprimer + couleurASupprimer);
+  panierLocalStorage.splice(item, 1);
+  document.getElementById("cart__items").removeChild(articleASupprimer);
+  localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
+  
+  alert('Article supprimé du panier!');
+};
+
 
 /* Total quantités et total prix*/
 /*
