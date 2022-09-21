@@ -137,6 +137,7 @@ function modifierQute()
   panierLocalStorage[item].qute = quantiteAMettreAJour;
   localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
   alert('Quantité modifiée dans le panier!');
+  location.reload();
   return;
 };
 
@@ -155,33 +156,38 @@ function supprimerArticle()
   localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
   
   alert('Article supprimé du panier!');
+  location.reload();
 };
 
 
 /* Total quantités et total prix*/
-/*
+
 function totaux()
 {
-let quantiteProduit = document.querySelectorAll(".itemQuantity");
-let quantiteLength = quantiteProduit.length;
-totalQuantite = 0;
 
-let prixTotal = 0;
+ 
+  //let quantiteParProduit = produitQute;
+  let quantiteProduit = document.querySelectorAll(".itemQuantity");//quantite par produit
+  let totalProduitsPanier = quantiteProduit.length;//nombre d'articles differents
+ let totalQuantite = 0;
 
-for (let i = 0; i < quantiteLength; i++)
-{
-  totalQuantite += quantiteProduit[i].valueAsNumber;
-  prixTotal += (quantiteProduit[i].valueAsNumber * panierLocalStorage[i].prix);
-}
+  let prixTotal = 0;
 
-let elementTotalQuantite = document.getElementById("totalQuantity");
+  for (let i = 0; i < totalProduitsPanier; i++)
+  {
+  totalQuantite += quantiteProduit[i].valueAsNumber;//ajout de la quantite du produit pour chaque produit dans le panier
+  prixTotal += (quantiteProduit[i].value * panierLocalStorage[i].prix);//on multiplie la quantite d'un produit par son prix pour chaque produit
+  }
+  
+  let elementTotalQuantite = document.getElementById("totalQuantity");
 elementTotalQuantite.innerText = totalQuantite;
-//calcul du prix total
+//affichage du prix total
 let elementTotalPrix = document.getElementById("totalPrice");
 elementTotalPrix.innerText = prixTotal;
+ 
 }    
 totaux(); 
-     */        
+           
   
     
 }      
