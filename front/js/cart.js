@@ -313,26 +313,24 @@ Puis envoie des données avec la méthose POST et vers la page de confirmation d
     Accept: "*/*",
     "Content-Type": "application/json"
     },
-    body: orderId,
+    body: JSON.stringify(orderId),
     
   }
-  
-  
   
   fetch("http://localhost:3000/api/products/order", optionsFetch)
   .then((Response)=> Response.json())
   .then((data)=>{
     console.log(data);
-    localStorage.setItem("orderId", orderId);
+    localStorage.setItem("orderId", JSON.stringify(orderId));
   
-    document.location.href = "confirmation.html";
+   // document.location.href = "confirmation.html";
   })
   .catch((err)=>
   {
     alert("Problème avec le fetch: " + err.message);
   });
   //console.log(body.contact);
-  /*
+  
   const checkDataApi = fetch("http://localhost:3000/api/products/order")
   checkDataApi.then(async(Response)=>{
     try{
@@ -341,7 +339,7 @@ Puis envoie des données avec la méthose POST et vers la page de confirmation d
     }catch(e){
       console.log(e);
     }
-  })*/
+  })
 /*
   commande.then((response)=>{
     try{
