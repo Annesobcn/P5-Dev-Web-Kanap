@@ -290,36 +290,48 @@ Puis envoie des données avec la méthose POST et vers la page de confirmation d
     productsId.push(panierLocalStorage[i].ref);
   }
  
-  let contact = 
+  let orderId = {
+  contact:
    {
       'firstName': inputFirstName.value,
       'lastName': inputLastName.value,
       'address': inputAdress.value,
       'ville': inputCity.value,
       'email': inputMail.value,
-    };
+   },
+   products: productsId,
+    }
     
- console.log("productsId");
- console.log(productsId);
- console.log("contact");
- console.log(contact);
-
+ console.log("orderId");
+ console.log(orderId);
 
  
-  const commande = fetch("http://localhost:3000/api/products/order", 
-  {
+  const optionsFetch = {
     method: 'POST',
-      headers: 
-      {
-      Accept: 'application/json',
-      "Content-Type": "application/json"
-      },
-      body: JSON.stringify({contact,productsId})
+    headers: 
+    {
+    Accept: "*/*",
+    "Content-Type": "application/json"
+    },
+    body: orderId,
+    
+  }
+  
+  
+  
+  fetch("http://localhost:3000/api/products/order", optionsFetch)
+  .then((Response)=> Response.json())
+  .then((data)=>{
+    console.log(data);
+    localStorage.setItem("orderId", orderId);
+  
+    document.location.href = "confirmation.html";
   })
   .catch((err)=>
   {
     alert("Problème avec le fetch: " + err.message);
   });
+  //console.log(body.contact);
   /*
   const checkDataApi = fetch("http://localhost:3000/api/products/order")
   checkDataApi.then(async(Response)=>{
