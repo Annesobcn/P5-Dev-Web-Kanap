@@ -21,14 +21,20 @@ fetch(`http://localhost:3000/api/products/?product-ID`)
 alert(error);
 console.log("Api loading : failed!");
     })
-
-
+//bouton pour valider la commande
+let commandBtn = document.getElementById('order');
+commandBtn.addEventListener('click', function(e)
+{
+  e.preventDefault();
+  postFormulaire();
+}
+);
    //si le panier est vide
    let positionEmptyCart = document.querySelector("#cart__items");
 
-   if (localStorage.getItem('numeroDeCommande') !== null )
+   if (localStorage.getItem('orderId') !== null )
    {
-    document.getElementById('numeroDeCommande').innerText = localStorage.getItem(`numeroDeCommande`)
+    document.getElementById('orderId').innerText = localStorage.getItem('orderId')
    
   }
    function insertionPanier() 
@@ -36,7 +42,7 @@ console.log("Api loading : failed!");
 
    if (panierLocalStorage === null || panierLocalStorage == 0) 
    {
-    let emptyCart = `Aucun article dans le panier.`;
+    let emptyCart = "Aucun article dans le panier.";
     positionEmptyCart.innerText = emptyCart;
     } 
     else  {
@@ -187,29 +193,39 @@ elementTotalPrix.innerText = prixTotal;
  
 }    
 totaux(); 
+}      
+}
+}
+insertionPanier(); 
+
   /*Formulaire*/
        //Récupération et analyse des données saisies dans le formulaire 
        function formulaire()
        {
-        let form = document.querySelector(".cart__order__form");
+       // let form = document.querySelector(".cart__order__form");
         let noms = new RegExp("^[a-zA-Z0-9.! ,.'-]+$");
-        let adresse = new RegExp('^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+');
-        let mail = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+        let adresse = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)");
+        let mail = new RegExp(('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$'));
 
         //Ecoute des entrées de l'utilisateur sur chaque élément du formulaire
-        form.firstName.addEventListener('change', function(){
+        document.getElementById('firstName').addEventListener('input', function()
+        {
           validFirstName(this);
         });
-        form.lastName.addEventListener('change', function(){
+        document.getElementById('lastName').addEventListener('input', function()
+        {
           validLastName(this);
         });
-        form.address.addEventListener('change', function(){
+        document.getElementById('address').addEventListener('input', function()
+        {
           validAddress(this);
         });
-        form.city.addEventListener('change', function(){
+        document.getElementById('city').addEventListener('input', function()
+        {
           validCity(this);
         });
-        form.email.addEventListener('change', function(){
+        document.getElementById('email').addEventListener('input', function()
+        {
           validEmail(this);
         });
 
@@ -254,14 +270,91 @@ let validEmail = function(inputEmail){
     emailAlertMessage.innerText = 'Champs invalide!';
   }
 };
-}   
+}
+formulaire();  
+/*création d'un objet Contact contenant les éléments du formulaire 
+et d'un tableau de produits contenant les produits du panier
+Puis envoie des données avec la méthose POST et vers la page de confirmation de commande */
+//La fonction postFormulaire se déclanche au click du bouton valider
+ function postFormulaire(){
+  let inputFirstName = document.getElementById('firstName');
+  let inputLastName = document.getElementById('lastName');
+  let inputAdress = document.getElementById('address');
+  let inputCity = document.getElementById('city');
+  let inputMail = document.getElementById('email');
   
+//tableau de produits
+  let productsId = [];
+  for (let i in panierLocalStorage)
+  {
+    productsId.push(panierLocalStorage[i].ref);
+  }
+ 
+  let contact = 
+   {
+      'firstName': inputFirstName.value,
+      'lastName': inputLastName.value,
+      'address': inputAdress.value,
+      'ville': inputCity.value,
+      'email': inputMail.value,
+    };
+    
+ console.log("productsId");
+ console.log(productsId);
+ console.log("contact");
+ console.log(contact);
+
+
+ 
+  const commande = fetch("http://localhost:3000/api/products/order", 
+  {
+    method: 'POST',
+      headers: 
+      {
+      Accept: 'application/json',
+      "Content-Type": "application/json"
+      },
+      body: JSON.stringify({contact,productsId})
+  })
+  .catch((err)=>
+  {
+    alert("Problème avec le fetch: " + err.message);
+  });
+  /*
+  const checkDataApi = fetch("http://localhost:3000/api/products/order")
+  checkDataApi.then(async(Response)=>{
+    try{
+      console.log(checkDataApi);
+      const donneesSurServer = await Response.json()
+    }catch(e){
+      console.log(e);
+    }
+  })*/
+/*
+  commande.then((response)=>{
+    try{
+        console.log("response");
+        console.log(response);
+      const contenu = response();
+        console.log("contenu");
+        console.log(contenu);
+    }catch(e){
+      console.log(e);
+    }*/
+  //});
+    /*localStorage.setItem("orderId", data.orderId);
+  
+    document.location.href = "confirmation.html";*/
+  
+  /*
+  .catch((err) =>{
+    alert(err);
+  });
+}*/
+};
 
     
-}      
-}
-}
-insertionPanier();   
+  
   
 
     
