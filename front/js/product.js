@@ -1,5 +1,4 @@
 let newProduct = '';
-//Lien entre un produit de la page d'accueil et la page produit
   let completeUrl = location;
   let url = new URL(completeUrl);
   console.log(url);
@@ -22,7 +21,7 @@ fetch("http://localhost:3000/api/products")
   .then(function(products) 
   {
     console.log("API loaded");
-    console.log(products[id]);//récupération des informations produits
+    /* Fonction pour créer la fiche du produit cliqué par l'utilisateur*/
   
     function ficheProduit(products, id) 
       {
@@ -36,8 +35,6 @@ fetch("http://localhost:3000/api/products")
         imageProduit.setAttribute("src", products[id].imageUrl);
         imageProduit.setAttribute("alt", products[id].altTxt);
         
-      
-      
         //création balises et insertion données pour titre, prix et description
         h1 = document.createElement("h1");
         document.querySelector("#title").appendChild(h1);
@@ -65,8 +62,6 @@ fetch("http://localhost:3000/api/products")
    ficheProduit(products, id);
 
 //*******localSotrage********/
-
-
 
 function saveProduct(id) 
 {
@@ -110,7 +105,6 @@ let panierLocalStorage = JSON.parse(localStorage.getItem("panier"));
 //s'il y a des produits dans le panier: on vérifie qu'il n'y ait pas le même que celui selectionné
  if(panierLocalStorage)
 {
- // alert(p);
   let verifPanier = panierLocalStorage.find(
     (p) => 
     p.ref == optionsProduit.ref && p.coul == optionsProduit.coul

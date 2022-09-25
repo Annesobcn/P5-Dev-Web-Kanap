@@ -1,10 +1,10 @@
+//connection aux informations du local storage
 let panierLocalStorage = JSON.parse(localStorage.getItem("panier"));
 console.table(panierLocalStorage);
 
 
-//Recupération des produits via requete fetch
+//Recupération des produits sur l'API via requete fetch sous forme de tableau
 fetch(`http://localhost:3000/api/products/?product-ID`)
-//récupération des produits sous forme de tableau
     .then(function openArray(productsArray) {
       if (productsArray.ok) {
                
@@ -21,7 +21,7 @@ fetch(`http://localhost:3000/api/products/?product-ID`)
 alert(error);
 console.log("Api loading : failed!");
     })
-//bouton pour valider la commande
+//bouton pour valider la commande au click de l'utilisateur et lancer la fonction pour poster le fomrulaire.
 let commandBtn = document.getElementById('order');
 commandBtn.addEventListener('click', function(e)
 {
@@ -29,32 +29,34 @@ commandBtn.addEventListener('click', function(e)
   postFormulaire();
 }
 );
-   //si le panier est vide
-   let positionEmptyCart = document.querySelector("#cart__items");
 
+   //Pour insérer les information de commande validées sur le panier dans le local storage
+   let positionEmptyCart = document.querySelector("#cart__items");
    if (localStorage.getItem('orderId') !== null )
    {
     document.getElementById('orderId').innerText = localStorage.getItem('orderId')
-   
   }
+  //*Fonction pour intégrer les informations du local storage dans le panier du DOM
    function insertionPanier() 
    {
-
+    //si le panier est vide
    if (panierLocalStorage === null || panierLocalStorage == 0) 
    {
     let emptyCart = "Aucun article dans le panier.";
     positionEmptyCart.innerText = emptyCart;
     } 
     else  {
+            //*boucle pour répéter la création de fiche pour chaque article du panier
             for (let items in panierLocalStorage)
             {
               let item = JSON.parse(items);
               console.log(item);
+            //récupération des produits présents dans le local storage(id, couleur et quantité)
               let produitRef = panierLocalStorage[item].ref;
               let produitCouleur = panierLocalStorage[item].coul;
               let produitQute = panierLocalStorage[item].qute;
-  //affichage des produits présents dans local storage
-
+            
+              //affichage des produits présents dans local storage
                 article = document.createElement("article");
                 document.querySelector("#cart__items").appendChild(article);
                 article.setAttribute("class", "cart__item");
@@ -114,7 +116,6 @@ commandBtn.addEventListener('click', function(e)
                   modifierQute();
                 });
                
-                
                 let boutonSupprimer = document.createElement("div");
                 divProduitSettings.appendChild(boutonSupprimer);
                 boutonSupprimer.className = "cart__item__content__settings__delete";
@@ -129,8 +130,9 @@ commandBtn.addEventListener('click', function(e)
                   supprimerArticle(produitRef, produitCouleur);
                 })
               
-    /* Modifier la quantité*/
-//fonction pour modifier la quantité si l'utilisateur clique sur le bouton input
+          /*** Modifier la quantité**/
+
+//*fonction pour modifier la quantité lorsque l'utilisateur clique sur le bouton input
 function modifierQute() 
 { 
   let parentQuantite = document.querySelector("[data-id=" + CSS.escape(produitRef) + "][data-color=" + CSS.escape(produitCouleur) +"]");
@@ -147,12 +149,9 @@ function modifierQute()
   return;
 };
 
-
-    /*Fonction pour supprimer un article*/
+    //*Fonction pour supprimer un article au click sur "Supprimer"
 function supprimerArticle()
 {
-  console.log(produitRef);
-
   let articleASupprimer = document.querySelector("[data-id=" + CSS.escape(produitRef) + "][data-color=" + CSS.escape(produitCouleur) +"]");
   let referenceASupprimer = articleASupprimer.dataset.id;
   let couleurASupprimer = articleASupprimer.dataset.color;
@@ -160,37 +159,31 @@ function supprimerArticle()
   panierLocalStorage.splice(item, 1);
   document.getElementById("cart__items").removeChild(articleASupprimer);
   localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
-  
   alert('Article supprimé du panier!');
   location.reload();
 };
 
-
-/* Total quantités et total prix*/
-
+/* Total quantités et total prix**/
+//*Fonction et boucle pour calculer les totaux pour chaque produit du panier
 function totaux()
 {
-
- 
   //let quantiteParProduit = produitQute;
-  let quantiteProduit = document.querySelectorAll(".itemQuantity");//quantite par produit
-  let totalProduitsPanier = quantiteProduit.length;//nombre d'articles differents
- let totalQuantite = 0;
-
-  let prixTotal = 0;
-
+    let quantiteProduit = document.querySelectorAll(".itemQuantity");
+    let totalProduitsPanier = quantiteProduit.length;
+    let totalQuantite = 0;
+    let prixTotal = 0;
+ 
   for (let i = 0; i < totalProduitsPanier; i++)
   {
-  totalQuantite += quantiteProduit[i].valueAsNumber;//ajout de la quantite du produit pour chaque produit dans le panier
-  prixTotal += (quantiteProduit[i].value * panierLocalStorage[i].prix);//on multiplie la quantite d'un produit par son prix pour chaque produit
+  totalQuantite += quantiteProduit[i].valueAsNumber;
+  prixTotal += (quantiteProduit[i].value * panierLocalStorage[i].prix);
   }
-  
+//affichage de la quantité
   let elementTotalQuantite = document.getElementById("totalQuantity");
-elementTotalQuantite.innerText = totalQuantite;
+  elementTotalQuantite.innerText = totalQuantite;
 //affichage du prix total
-let elementTotalPrix = document.getElementById("totalPrice");
-elementTotalPrix.innerText = prixTotal;
- 
+  let elementTotalPrix = document.getElementById("totalPrice");
+  elementTotalPrix.innerText = prixTotal;
 }    
 totaux(); 
 }      
@@ -198,11 +191,11 @@ totaux();
 }
 insertionPanier(); 
 
-  /*Formulaire*/
-       //Récupération et analyse des données saisies dans le formulaire 
+          /**Formulaire**/
+
+       //*Fonction pour récuper et analyser des données saisies dans le formulaire 
        function formulaire()
        {
-       // let form = document.querySelector(".cart__order__form");
         let noms = new RegExp("^[a-zA-Z0-9.! ,.'-]+$");
         let adresse = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)");
         let mail = new RegExp(('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$'));
@@ -229,7 +222,26 @@ insertionPanier();
           validEmail(this);
         });
 
-//messages erreur ou correct selon entrées de l'utilisateur
+//Fonctions pour envoyer messages erreur ou correct selon entrées de l'utilisateur
+/* essai
+let validEntry = (entry, inputEntry) =>
+{
+  let entry = inputEntry.nextElementSibling;
+  if (noms.test(inputEntry.value))
+    {
+      entryAlertMessage.innerText = '';
+    
+    }else{
+      entryAlertMessage = "Champs invalide!";
+    }
+};
+validEntry(firstName, inputFirstName);
+validEntry(lastName, inputLastName);
+validEntry(address, inputAddress, addresse);
+validEntry(city, inputCity);
+validEntry(email, inputEmail, mail);
+*/
+
 let validFirstName = function(inputFirstName){
     let firstNameAlertMessage = inputFirstName.nextElementSibling;
     if (noms.test(inputFirstName.value)) {
@@ -272,10 +284,12 @@ let validEmail = function(inputEmail){
 };
 }
 formulaire();  
-/*création d'un objet Contact contenant les éléments du formulaire 
+
+/****Création d'un objet Contact contenant les éléments du formulaire 
 et d'un tableau de produits contenant les produits du panier
-Puis envoie des données avec la méthose POST et vers la page de confirmation de commande */
-//La fonction postFormulaire se déclanche au click du bouton valider
+Puis envoie des données avec la méthose POST et vers la page de confirmation de commande ****/
+
+//*La fonction postFormulaire se déclanche au click du bouton valider
  function postFormulaire(){
   let inputFirstName = document.getElementById('firstName');
   let inputLastName = document.getElementById('lastName');
@@ -283,14 +297,15 @@ Puis envoie des données avec la méthose POST et vers la page de confirmation d
   let inputCity = document.getElementById('city');
   let inputMail = document.getElementById('email');
   
-//tableau de produits
+  //tableau de produits et objet contact string et tableau de références
   let productsId = [];
   for (let i in panierLocalStorage)
   {
     productsId.push(panierLocalStorage[i].ref);
   }
  
-  let orderId = {
+  let orderId = 
+  {
   contact:
    {
       'firstName': inputFirstName.value,
@@ -299,14 +314,11 @@ Puis envoie des données avec la méthose POST et vers la page de confirmation d
       'ville': inputCity.value,
       'email': inputMail.value,
    },
-   products: productsId,
-    }
-    
- console.log("orderId");
- console.log(orderId);
+   products:productsId
+  }
 
- 
-  const optionsFetch = {
+  const optionsFetch = 
+  {
     method: 'POST',
     headers: 
     {
@@ -314,53 +326,19 @@ Puis envoie des données avec la méthose POST et vers la page de confirmation d
     "Content-Type": "application/json"
     },
     body: JSON.stringify(orderId),
-    
   }
   
-  fetch("http://localhost:3000/api/products/order", optionsFetch)
+  fetch(`http://localhost:3000/api/products/order`, optionsFetch)
   .then((Response)=> Response.json())
   .then((data)=>{
     console.log(data);
-    localStorage.setItem("orderId", JSON.stringify(orderId));
-  
-   // document.location.href = "confirmation.html";
+    localStorage.setItem("orderId", productsId);
+    document.location.href = "confirmation.html";
   })
   .catch((err)=>
   {
     alert("Problème avec le fetch: " + err.message);
   });
-  //console.log(body.contact);
-  
-  const checkDataApi = fetch("http://localhost:3000/api/products/order")
-  checkDataApi.then(async(Response)=>{
-    try{
-      console.log(checkDataApi);
-      const donneesSurServer = await Response.json()
-    }catch(e){
-      console.log(e);
-    }
-  })
-/*
-  commande.then((response)=>{
-    try{
-        console.log("response");
-        console.log(response);
-      const contenu = response();
-        console.log("contenu");
-        console.log(contenu);
-    }catch(e){
-      console.log(e);
-    }*/
-  //});
-    /*localStorage.setItem("orderId", data.orderId);
-  
-    document.location.href = "confirmation.html";*/
-  
-  /*
-  .catch((err) =>{
-    alert(err);
-  });
-}*/
 };
 
     
