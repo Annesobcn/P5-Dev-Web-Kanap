@@ -74,7 +74,7 @@ fetch(`http://localhost:3000/api/products/?product-ID`)
         alert("Attention! Choisissez une couleur!");
       } else if (quantite <= 0 || quantite > 100) {
         alert("Attention! Entrez une quantité entre 1 et 100");
-      } else if (quantite !== quantite.isInteger) {
+      } else if (quantite.value !== quantite.isInteger) {
         alert("Veuillez entrer un nombre entier!");
       } else {
         //*ajout des valeurs du produit choisi pour le local storage*/
@@ -94,9 +94,9 @@ fetch(`http://localhost:3000/api/products/?product-ID`)
             (p) => p.ref == optionsProduit.ref && p.coul == optionsProduit.coul
           );
           //si le même produit(ref et coul) est dans le panier, on ajoute que la quantité
-          if (verifPanier && verifPanier.qute >= 100) {
+          if (verifPanier && ((verifPanier.qute + optionsProduit.qute) > 100)) {
             alert(
-              "Impossible d'ajouter cette quantité au panier car la quantité maximu est dépassée!"
+              "Impossible d'ajouter cette quantité au panier car la quantité maximum est dépassée!"
             );
             return;
           } else if (verifPanier) {
