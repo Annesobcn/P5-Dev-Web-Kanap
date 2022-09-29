@@ -74,7 +74,7 @@ fetch(`http://localhost:3000/api/products/?product-ID`)
         alert("Attention! Choisissez une couleur!");
       } else if (quantite <= 0 || quantite > 100) {
         alert("Attention! Entrez une quantité entre 1 et 100");
-      } else if (quantite !== quantite.isInteger) {
+      } else if (! Number.isInteger(quantite)) {
         alert("Veuillez entrer un nombre entier!");
       } else {
         //*ajout des valeurs du produit choisi pour le local storage*/
