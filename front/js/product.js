@@ -47,7 +47,7 @@ fetch(`http://localhost:3000/api/products/?product-ID`)
                             
         function colorSelect()
         { 
-          for (i in products[id].colors)
+          for (let i in products[id].colors)
           {     
             color = document.createElement("option"); 
              document.querySelector("#colors").appendChild(color);
