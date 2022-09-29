@@ -10,7 +10,7 @@ let newProduct = '';
       alert("id not found!");
   };
 
-fetch("http://localhost:3000/api/products")
+fetch(`http://localhost:3000/api/products/?product-ID`)
     .then(function openArray(productsArray) {
       if (productsArray.ok) {
        return productsArray.json();
@@ -82,7 +82,7 @@ if (couleur == '') {
 else if(quantite <= 0 || quantite > 100) {
   alert("Attention! Entrez une quantité entre 1 et 100")
 } 
-else if(quantite.isInteger !== quantite.isInteger)
+else if(quantite !== quantite.isInteger)
 {
 alert("Veuillez entrer un nombre entier!");
 }

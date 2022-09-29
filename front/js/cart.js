@@ -2,7 +2,7 @@ let panierLocalStorage = JSON.parse(localStorage.getItem("panier"));
 console.table(panierLocalStorage);
 
 //Recupération des produits sur l'API via requete fetch sous forme de tableau
-fetch(`http://localhost:3000/api/products/?product-ID`)
+fetch(`http://localhost:3000/api/products`)
     .then(function openArray(productsArray) {
       if (productsArray.ok) {
        return productsArray.json();
