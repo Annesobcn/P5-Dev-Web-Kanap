@@ -64,7 +64,7 @@ fetch(`http://localhost:3000/api/products/?product-ID`)
       const choixCouleur = document.getElementById("colors");
       const couleur = choixCouleur.value;
       const choixQte = document.querySelector("input");
-      const quantite = choixQte.value;
+      const quantite = Number(choixQte.value);
       const prix = products[id].price;
       const imageProduit = products[id].imageUrl;
       const altTxt = products[id].altTxt;
@@ -74,7 +74,7 @@ fetch(`http://localhost:3000/api/products/?product-ID`)
         alert("Attention! Choisissez une couleur!");
       } else if (quantite <= 0 || quantite > 100) {
         alert("Attention! Entrez une quantité entre 1 et 100");
-      } else if (quantite.value !== quantite.isInteger) {
+      } else if (quantite !== quantite.isInteger) {
         alert("Veuillez entrer un nombre entier!");
       } else {
         //*ajout des valeurs du produit choisi pour le local storage*/
