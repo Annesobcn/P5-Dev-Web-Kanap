@@ -1,27 +1,20 @@
-//connection aux informations du local storage
 let panierLocalStorage = JSON.parse(localStorage.getItem("panier"));
 console.table(panierLocalStorage);
-
 
 //Recupération des produits sur l'API via requete fetch sous forme de tableau
 fetch(`http://localhost:3000/api/products/?product-ID`)
     .then(function openArray(productsArray) {
       if (productsArray.ok) {
-               
-    console.log("API loaded");
        return productsArray.json();
         }
  })
  .then((data) => {
-  console.log('data', data);
   return data
 })
     .catch(function(error)  
     {
-alert(error);
-console.log("Api loading : failed!");
+alert(error);;
     })
-//bouton pour valider la commande au click de l'utilisateur et lancer la fonction pour poster le fomrulaire.
 let commandBtn = document.getElementById('order');
 commandBtn.addEventListener('click', function(e)
 {
@@ -50,13 +43,12 @@ commandBtn.addEventListener('click', function(e)
             for (let items in panierLocalStorage)
             {
               let item = JSON.parse(items);
-              console.log(item);
             //récupération des produits présents dans le local storage(id, couleur et quantité)
               let produitRef = panierLocalStorage[item].ref;
               let produitCouleur = panierLocalStorage[item].coul;
               let produitQute = panierLocalStorage[item].qute;
             
-              //affichage des produits présents dans local storage
+              //affichage des produits récupérés
                 article = document.createElement("article");
                 document.querySelector("#cart__items").appendChild(article);
                 article.setAttribute("class", "cart__item");
@@ -136,12 +128,10 @@ commandBtn.addEventListener('click', function(e)
 function modifierQute() 
 { 
   let parentQuantite = document.querySelector("[data-id=" + CSS.escape(produitRef) + "][data-color=" + CSS.escape(produitCouleur) +"]");
-  console.log(parentQuantite);
   let quantiteModifiee = parentQuantite.querySelector("input");
   let quantiteAMettreAJour = quantiteModifiee.value;
 
   produitQuantite = quantiteAMettreAJour;
-  console.log(panierLocalStorage[item].qute);
   panierLocalStorage[item].qute = quantiteAMettreAJour;
   localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
   alert('Quantité modifiée dans le panier!');
@@ -223,24 +213,6 @@ insertionPanier();
         });
 
 //Fonctions pour envoyer messages erreur ou correct selon entrées de l'utilisateur
-/* essai
-let validEntry = (entry, inputEntry) =>
-{
-  let entry = inputEntry.nextElementSibling;
-  if (noms.test(inputEntry.value))
-    {
-      entryAlertMessage.innerText = '';
-    
-    }else{
-      entryAlertMessage = "Champs invalide!";
-    }
-};
-validEntry(firstName, inputFirstName);
-validEntry(lastName, inputLastName);
-validEntry(address, inputAddress, addresse);
-validEntry(city, inputCity);
-validEntry(email, inputEmail, mail);
-*/
 
 let validFirstName = function(inputFirstName){
     let firstNameAlertMessage = inputFirstName.nextElementSibling;
@@ -284,10 +256,6 @@ let validEmail = function(inputEmail){
 };
 }
 formulaire();  
-
-/****Création d'un objet Contact contenant les éléments du formulaire 
-et d'un tableau de produits contenant les produits du panier
-Puis envoie des données avec la méthose POST et vers la page de confirmation de commande ****/
 
 //*La fonction postFormulaire se déclanche au click du bouton valider
  function postFormulaire(){

@@ -10,9 +10,7 @@ let newProduct = '';
       alert("id not found!");
   };
 
-//Recupération des produits via requete fetch
 fetch("http://localhost:3000/api/products")
-//récupération des produits sous forme de tableau
     .then(function openArray(productsArray) {
       if (productsArray.ok) {
        return productsArray.json();
@@ -69,10 +67,8 @@ function saveProduct(id)
    // récupération des valeurs requises dans le panier: id, couleur et quantité
    const nom = products[id].name;
    const reference = products[id]._id;
-   //récupérer le choix de la couleur
    const choixCouleur = document.getElementById("colors");
    const couleur = choixCouleur.value;
-   //pour récupérer le choix de la quantité
    const choixQte = document.querySelector("input");
    const quantite = choixQte.value;
    const prix = products[id].price;
@@ -83,12 +79,16 @@ function saveProduct(id)
 if (couleur == '') {
   alert("Attention! Choisissez une couleur!");
 }
-else if(quantite<=0 || quantite > 100) {
+else if(quantite <= 0 || quantite > 100) {
   alert("Attention! Entrez une quantité entre 1 et 100")
-} else{
+} 
+else if(quantite.isInteger !== quantite.isInteger)
+{
+alert("Veuillez entrer un nombre entier!");
+}
+else{
 
    //*ajout des valeurs du produit choisi pour le local storage*/
-  
    let optionsProduit = 
    {
     ref: reference,
@@ -100,9 +100,8 @@ else if(quantite<=0 || quantite > 100) {
     altTxt: altTxt
     };
 
-//constante pour convertir les objets du local storage en objet javascript
+
 let panierLocalStorage = JSON.parse(localStorage.getItem("panier"));
-//s'il y a des produits dans le panier: on vérifie qu'il n'y ait pas le même que celui selectionné
  if(panierLocalStorage)
 {
   let verifPanier = panierLocalStorage.find(
@@ -110,7 +109,11 @@ let panierLocalStorage = JSON.parse(localStorage.getItem("panier"));
     p.ref == optionsProduit.ref && p.coul == optionsProduit.coul
   );
   //si le même produit(ref et coul) est dans le panier, on ajoute que la quantité
-    if (verifPanier) 
+  if (verifPanier && verifPanier.qute >= 100){
+    alert("Impossible d'ajouter cette quantité au panier car la quantité maximu est dépassée!");
+    return;
+  }  
+  else if (verifPanier) 
     {
       verifPanier.qute = verifPanier.qute + optionsProduit.qute;
       localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
@@ -121,9 +124,10 @@ let panierLocalStorage = JSON.parse(localStorage.getItem("panier"));
     panierLocalStorage.push(optionsProduit);
     localStorage.setItem("panier", JSON.stringify(panierLocalStorage));
     alert('Nouvel article ajouté au panier');
+  
+}
 
-      
-} else{
+else{
   //si panier vide: on ajoute le produit dans tableau
       panierLocalStorage = [];
       panierLocalStorage.push(optionsProduit);
